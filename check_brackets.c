@@ -28,10 +28,10 @@ int main() {
 	input_buffer [strcspn (input_buffer, "\r\n")] = '\0';  //remove end-of-line characters
 
     input_len = strlen(input_buffer);
-    printf("%d characters were read.\n",input_len);
+    fprintf(stderr, "%d characters were read.\n",input_len);
     // printf("The input was: '%s'\n",input_buffer);
 	fflush(stdout);
-    Stack * stkBk = createStack(max_line); 
+    Stack * stkBk = createStack(input_len + 2); 
     // Printing answer, write your code here
 	fputs(stderr, "My result is:\n");
     for (int position = 0; position < input_len; ++position) {
@@ -48,6 +48,7 @@ int main() {
             // why is this 1-based
             bk.type = hoc.t; bk.position = position + 1;
             push(stkBk, bk);
+			// we don't need error handling because the sizes just work but yeah we should add it
         }
         if (hoc.d == CLOSE) {
             bk = pop(stkBk);
