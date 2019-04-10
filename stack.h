@@ -31,7 +31,7 @@ typedef struct StackNode
 typedef struct  {       
     unsigned capacity;
 	int top;	
-    //TODO: depending on the implementation - fill-in the fields of a struct
+    Bracket *array;
 }Stack; 
 
 
