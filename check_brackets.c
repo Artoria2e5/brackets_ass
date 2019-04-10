@@ -1,7 +1,25 @@
 #include <string.h>
 #include "stack.h"
 
+enum BrackDir = {OPEN, CLOSE, NOT};
+typedef struct idk {BrackDir d, BracketType t} bk_info;
+parse_atom LUT[256];
+
+static void construct_lut(void);
+static void construct_lut() {
+    for (int i = 0; i < 256; i++)
+	    LUT[i].d = NOT;
+    
+    // switch-case fries my brain sorry
+    LUT['('].d = LUT['['].d = LUT['{'].d = OPEN;
+    LUT[')'].d = LUT[')'].d = LUT[')'].d = CLOSE;
+    LUT['('].t = LUT[')'].t = ROUND;
+    LUT['['].t = LUT[']'].t = SQUARE;
+    LUT['{'].t = LUT['}'].t = CURLY;
+}
+
 int main() {
+    construct_lut();
     int max_line = 105000;
 	char input_buffer[max_line];
 	int input_len = 0;	
@@ -13,20 +31,32 @@ int main() {
     printf("%d characters were read.\n",input_len);
     // printf("The input was: '%s'\n",input_buffer);
 	fflush(stdout);
-    Stack * opening_brackets_stack = createStack(max_line); 
+    Stack * stkBk = createStack(max_line); 
+    // Printing answer, write your code here
+	fputs(stderr, "My result is:\n");
     for (int position = 0; position < input_len; ++position) {
         char next = input_buffer[position];
-
-        if (next == '(' || next == '[' || next == '{') {
-            // Process opening bracket, write your code here
+        bk_info hoc = LUT[next];
+        
+        // not interesting
+        if (hoc.d == NOT) {
+            continue;
         }
-
-        if (next == ')' || next == ']' || next == '}') {
-            // Process closing bracket, write your code here
+        
+        Bracket bk;
+        if (hoc.d == OPEN) {
+            // why is this 1-based
+            bk.type = hoc.t; bk.position = position + 1;
+            push(stkBk, bk);
+        }
+        if (hoc.d == CLOSE) {
+            bk = pop(stkBk);
+            if (bk.type != hoc.t) {
+                printf("%d\n", bk.position);
+                return 1;
+            }
         }
     }
-
-    // Printing answer, write your code here
-	printf("My result is:\n");
+    puts("Success")
     return 0;
 }
