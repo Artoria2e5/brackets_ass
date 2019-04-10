@@ -7,7 +7,7 @@ fi
 
 for f in inputs/*; do
 	basef=$(basename "$f")
-	./check_brackets < "$basef" > "outputs/$basef.b"
+	./check_brackets < "$f" > "outputs/$basef.b"
 	if !diff "outputs/$basef.a" "outputs/$basef.b"; then
 		echo "You messed $basef up. See above for the difference."
 	fi
