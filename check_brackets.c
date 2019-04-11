@@ -3,7 +3,7 @@
 
 enum BrackDir = {OPEN, CLOSE, NOT};
 typedef struct idk {BrackDir d, BracketType t} bk_info;
-parse_atom LUT[256];
+bk_info LUT[256];
 
 static void construct_lut(void);
 static void construct_lut() {
